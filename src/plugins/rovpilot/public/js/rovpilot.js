@@ -582,10 +582,11 @@
     var positions = this.positions;
     var updateRequired = false;
     //Only send if there is a change
-    var controls = {};
+    var controls = {}; 
+    //create a new object of the vehicle state variables
     controls.throttle = positions.throttle * this.power;
     controls.yaw = positions.yaw * this.power * 1.5;
-    controls.yaw = Math.min(Math.max(controls.yaw, -1), 1);
+    controls.yaw = Math.min(Math.max(controls.yaw, -1), 1); //restrict the yaw to within threshold
     controls.lift = positions.lift * this.power;
     controls.pitch = positions.pitch;
     controls.roll = positions.roll;
@@ -600,6 +601,7 @@
         for(var control in controls){
           if(controls[control] != this.priorControls[control]){
             this.cockpit.socket.emit(control, controls[control]);
+            //cockpit.socket.emit takes in args that are functions, and passes arg1 into arg2
           }
         }
       }
